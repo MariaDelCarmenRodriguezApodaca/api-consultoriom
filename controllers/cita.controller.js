@@ -83,8 +83,8 @@ function Reactivar(req,res){
 function citasActuales(req,res){
     let idDoctor=req.params.idDoctor;
     let hoy = moment().format('YYYY-MM-DD');
-    hoy = String(hoy);
-    Cita.find({fecha:hoy, status:'Pendiente',idDoctor:idDoctor}).populate({path:'idPaciente'}).exec((err, citasActuales)=>{
+    console.log(typeof(hoy));
+    Cita.find({fecha:hoy, status:'Pendiente', idDoctor:idDoctor}).populate({path:'idPaciente'}).exec((err, citasActuales)=>{
         if(err) return res.status(500).send({message: `Se presento un error innesperado ${err}`});
         if(!citasActuales) return res.status(500).send({message: `No se encontraron citas`});
         return res.status(200).send({citas:citasActuales});
