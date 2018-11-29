@@ -26,7 +26,13 @@ function addCita(req, res){
 }
 
 function getCita(req,res){
-    Cita.find().populate({path:'idPaciente'}).exec((err,citasGuardadas)=>{
+    let doctor ='';
+    if(req.user.puesto == 'Doctor'){
+        doctor = req.user.sub; //enElSubtenemoselID
+    }else{
+        doctor = req.user.doctor;
+    }
+    Cita.find({idDoctor:doctor}).populate({path:'idPaciente'}).exec((err,citasGuardadas)=>{
         if(err) return res.status(500).send({message: `Se presento un error innesperado ${err}`});
         if(!citasGuardadas) return res.status(500).send({message: `No se encontraron citas o no existen`});
         return res.status(200).send({citasGuardadas:citasGuardadas});
